@@ -11,9 +11,9 @@ const customerSchema = new mongoose.Schema({
         trim: true,
     },
     gender: {
+        type: String,
         enum: ["male", "female", "prefer not to say"],
         required: true,
-        type: String,
         lowercase: true,
     },
     email: {
@@ -23,16 +23,16 @@ const customerSchema = new mongoose.Schema({
         trim: true,
         unique: true,
     },
-    phoneNumber: {
+    phone: {
         type: String,
         required: true,
+        unique: true,
         minlength: [10, "Phone number is too short"],
         maxlength: [12, "Phone number is too long"],
     },
-    age: {
-        type: Number,
+    dob: {
+        type: Date,
         required: true,
-        min: [18, "age should be atleast 18"]
     },
     password: {
         type: String,
@@ -40,24 +40,42 @@ const customerSchema = new mongoose.Schema({
         minlength: [8, "password should be atleast 8"],
         select: false,
     },
-    bvn: {
+    kycID: {
         type: String,
         required: true,
         unique: true,
         sparse: true,
         trim: true,
+        minlength: [11, "kycID should be 11 digits"],
+        maxlength: [11, "kycID should not be more than 11 digits"], 
     },
-    nin: {
+    kycType: {
         type: String,
         required: true,
-        unique: true,
-        sparse: true,
-        trim: true,
+        enum: ["bvn", "nin"],
     },
-
-        timestamps: true,
+    kycIDVerified: {
+        type: Boolean,
+        required: true,
+        default: false,
     },
+    status: {
+        type: String,
+        required: true,
+        enum: ["active", "blocked", "closed"],
+        default: "active",
+    },
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        required: true,
+        default: "user",
+    },
+}, 
+{
+    timestamps: true,
+  },
 )
 const Customer = mongoose.model("Customer", customerSchema)
 
-module.exports = Customer
+module.exports = Customer;

@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
-const accountSchema = new mongoose.Schema({
+const bankAccountSchema = new mongoose.Schema({
+  customer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Customer",
+    required: true,
+  },
   accountNumber: {
     type: String,
     required: true,
@@ -9,18 +14,26 @@ const accountSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  accountBalance: {
+  balance: {
     type: Number,
     required: true,
     default: 15000,
   },
-  customer: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Customer",
+  bankCode: {
+    type: String,
     required: true,
   },
-});
+  fintechId: {
+    type: String,
+    required: true,
 
-const Account = mongoose.model("Account", accountSchema);
+  },
+},
+{
+  timestamps: true
+}
+);
+
+const Account = mongoose.model("Account", bankAccountSchema);
 
 module.exports = Account;
